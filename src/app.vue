@@ -1,78 +1,35 @@
 <template>
     <div id="app">
-        <el-container>
-            <el-header height="150px">
-                <div class="title">memcached monitor</div>
-            </el-header>
-            <el-main>
-                <el-form :label-position="labelPosition" :model="search" @submit.native.prevent @keyup.enter="onSearch">
-                    <el-form-item label="搜索缓存key，支持前缀搜索，示例：cachekey_">
-                        <el-input v-model="search.key"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-alert title="搜索提示" type="warning" description="单次最大支持输出1000个key ,支持redis和memcached平台">
-                        </el-alert>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSearch">搜索</el-button>
-                    </el-form-item>
-                </el-form>
-
-                <el-card class="box-card" v-if="searchResult.length">
-                    <div v-for="(i,index) in searchResult" :key="i.name" class="text item">
-                        [{{i.platform}}] {{i.name}}
-                        <a href="javascript:void(0)" @click=onDel(i.name,index)>删除</a>
+        <transition name="fade" mode="out-in">
+            <el-container>
+                <el-header height="150px">
+                    <div class="header">
+                        <div class="title">memcached monitor</div>
+                        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router @select="handleSelect">
+                            <el-menu-item index="/monitor">大盘监控 </el-menu-item>
+                            <el-menu-item index="/keys">key管理 </el-menu-item>
+                        </el-menu>
                     </div>
-                </el-card>
-            </el-main>
-        </el-container>
+
+                </el-header>
+                <el-main>
+                    <router-view></router-view>
+                </el-main>
+            </el-container>
+        </transition>
     </div>
 </template>
 
 <script>
-    import superagent from 'superagent'
     export default {
         data() {
             return {
-                labelPosition: 'top',
-                input: "",
-                search: {
-                    key: localStorage.getItem('cache_key') || ''
-                },
-                searchResult: [],
-                ajaxloading: false,
-                ajaxfail: false,
-                ajaxfailmsg: ''
-            };
+                activeIndex: "/keys"
+            }
         },
         methods: {
-            async onSearch() {
-                var self = this;
-                self.ajaxloading = true;
-                var result = (await superagent.get('/api/search', {
-                    key: self.search.key
-                })).body;
-                self.ajaxloading = false;
-                self.ajaxfail = result.code !== 200;
-                if (result.code === 200) {
-                    self.searchResult = result.body;
-                } else {
-                    self.ajaxfailmsg = result.message;
-                }
-            },
-            async onDel(key, index, count) {
-                var self = this;
-                self.ajaxloading = true;
-                var result = (await superagent.get('/api/del', {
-                    key: key
-                })).body;
-                self.ajaxloading = false;
-                self.ajaxfail = result.code !== 200;
-                if (result.code === 200) {
-                    self.searchResult.splice(index, count || 1);
-                } else {
-                    self.ajaxfailmsg = result.message;
-                }
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
             }
         }
     };
@@ -92,11 +49,15 @@
         font-weight: 800;
     }
 
-    .el-header .title {
+    .el-header .header {
         width: 1000px;
         margin: 0 auto;
         padding: 0 20px;
         box-sizing: border-box;
+    }
+
+    .el-header .el-menu--horizontal {
+        border-bottom: 0;
     }
 
     .el-main {

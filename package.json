@@ -6,8 +6,10 @@
     "dependencies": {
         "element-ui": "^2.0.3",
         "express": "^4.16.2",
+        "mockjs": "^1.0.1-beta3",
         "superagent": "^3.8.0",
-        "vue": "^2.5.3"
+        "vue": "^2.5.3",
+        "vue-router": "^3.0.1"
     },
     "devDependencies": {
         "autoprefixer": "^6.6.0",
