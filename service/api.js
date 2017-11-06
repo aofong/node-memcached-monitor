@@ -1,4 +1,5 @@
 var Mock = require('mockjs');
+var memcached = require('../sync/memcached');
 
 
 exports.search = (key) => {
@@ -23,7 +24,14 @@ exports.get = (key) => {
         'name|4-8': /[a-z][A-Z][0-9]/,
         'platform|1': ['redis', 'memcached'],
         ttl: new Date(),
-        'value': Random.cparagraph(20, 50)
+        'value': {
+            classId: Random.integer(1000, 9999),
+            className: Random.ctitle(5, 10)
+        }
     });
     return vdata;
+}
+
+exports.stats = async() => {
+    return await memcached.stats()
 }

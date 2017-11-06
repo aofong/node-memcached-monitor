@@ -6,7 +6,10 @@
     "dependencies": {
         "element-ui": "^2.0.3",
         "express": "^4.16.2",
-        "mockjs": "^1.0.1-beta3",
+        "highcharts": "^6.0.2",
+        "lei-stream": "^1.4.2",
+        "memcached": "^2.2.2",
+        "node-schedule": "^1.2.5",
         "superagent": "^3.8.0",
         "vue": "^2.5.3",
         "vue-router": "^3.0.1"
@@ -19,6 +22,7 @@
         "css-loader": "^0.27.0",
         "file-loader": "^0.10.1",
         "html-webpack-plugin": "^2.24.1",
+        "mockjs": "^1.0.1-beta3",
         "postcss-loader": "^1.3.3",
         "rimraf": "^2.5.4",
         "style-loader": "^0.13.2",

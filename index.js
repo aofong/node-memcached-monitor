@@ -1,12 +1,12 @@
 var express = require('express');
 var app = express();
 var api = require('./service/api');
+
+
+//var sync = require('./sync/index')
+
+
 //app.use(express.static('public'));
-
-
-app.get('/', function (req, res) {
-    res.sendfile('./views/index.html');
-});
 
 app.get('/search', function (req, res) {
     var key = req.query.key;
@@ -31,6 +31,15 @@ app.get('/del', function (req, res) {
 app.get('/get', function (req, res) {
     var key = req.query.key;
     var data = api.get(key);
+    res.send({
+        code: 200,
+        message: 'sucess',
+        body: data
+    });
+});
+
+app.get('/stats', async function (req, res) {
+    var data = await api.stats();
     res.send({
         code: 200,
         message: 'sucess',

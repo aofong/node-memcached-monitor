@@ -5,14 +5,15 @@
                 <el-header height="150px">
                     <div class="header">
                         <div class="title">memcached monitor</div>
-                        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router @select="handleSelect">
-                            <el-menu-item index="/monitor">大盘监控 </el-menu-item>
-                            <el-menu-item index="/keys">key管理 </el-menu-item>
-                        </el-menu>
+
                     </div>
 
                 </el-header>
                 <el-main>
+                    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router @select="handleSelect">
+                        <el-menu-item index="/monitor">服务监控 </el-menu-item>
+                        <el-menu-item index="/keys">keys管理 </el-menu-item>
+                    </el-menu>
                     <router-view></router-view>
                 </el-main>
             </el-container>
@@ -24,12 +25,12 @@
     export default {
         data() {
             return {
-                activeIndex: "/keys"
+                activeIndex: this.$route.path === '/' || this.$route.path === '' ? "/keys" : this.$route.path
             }
         },
         methods: {
             handleSelect(key, keyPath) {
-                console.log(key, keyPath);
+                //console.log(key, keyPath);
             }
         }
     };
@@ -50,18 +51,20 @@
     }
 
     .el-header .header {
-        width: 1000px;
+        width: 1024px;
         margin: 0 auto;
         padding: 0 20px;
         box-sizing: border-box;
     }
 
-    .el-header .el-menu--horizontal {
-        border-bottom: 0;
+    .el-main {
+        width: 1024px;
+        margin: 0 auto;
+        padding-top: 0;
     }
 
-    .el-main {
-        width: 1000px;
-        margin: 0 auto;
+    .el-main .el-menu {
+        border-bottom: 0;
+        margin-bottom: 20px;
     }
 </style>

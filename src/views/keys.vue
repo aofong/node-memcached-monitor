@@ -20,12 +20,19 @@
                 <a href="javascript:void(0)" @click=onShow(i.name)>查看</a>
             </div>
         </el-card>
+
+        <el-dialog title="查看缓存值" :visible.sync="dialogVisible" width="700px">
+            <el-pre :html="dialogContent"></el-pre>
+        </el-dialog>
     </div>
 </template>
 
 <script>
     import superagent from "superagent";
-    import { MessageBox } from "element-ui";
+    import {
+        MessageBox
+    } from "element-ui";
+    
     export default {
         data() {
             return {
@@ -36,7 +43,9 @@
                 searchResult: [],
                 ajaxloading: false,
                 ajaxfail: false,
-                ajaxfailmsg: ""
+                ajaxfailmsg: "",
+                dialogVisible: false,
+                dialogContent: ''
             };
         },
         methods: {
@@ -80,19 +89,16 @@
                 });
             },
             async onShow(key) {
+                var self = this;
+                self.ajaxloading = true;
                 var result = (await superagent.get("/api/get", {
                     key: key
                 })).body;
                 self.ajaxloading = false;
                 self.ajaxfail = result.code !== 200;
                 if (result.code === 200) {
-                    MessageBox.alert(
-                        `<pre>${JSON.stringify(result.body, null, 4)}</pre>`,
-                        `缓存${key}值`,
-                        {
-                            dangerouslyUseHTMLString: true
-                        }
-                    );
+                    self.dialogVisible = true;
+                    self.dialogContent = `${JSON.stringify(result.body, null, 4)}`;
                 } else {
                     self.ajaxfailmsg = result.message;
                 }
@@ -102,4 +108,5 @@
 </script>
 
 <style scoped>
+
 </style>
