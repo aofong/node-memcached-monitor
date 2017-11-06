@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var api = require('./service/api');
+var api = require('./api');
 
 
 //var sync = require('./sync/index')

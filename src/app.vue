@@ -13,6 +13,7 @@
                     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router @select="handleSelect">
                         <el-menu-item index="/monitor">服务监控 </el-menu-item>
                         <el-menu-item index="/keys">keys管理 </el-menu-item>
+                        <el-menu-item index="/setting">配置 </el-menu-item>
                     </el-menu>
                     <router-view></router-view>
                 </el-main>

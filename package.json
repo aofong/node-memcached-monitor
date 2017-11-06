@@ -2,7 +2,7 @@
     "name": "node-memcahed-monitor",
     "version": "1.0.0",
     "description": "memcached monitor for nodejs",
-    "main": "index.js",
+    "main": "./server/index.js",
     "dependencies": {
         "element-ui": "^2.0.3",
         "express": "^4.16.2",
