@@ -21,7 +21,7 @@
             </div>
         </el-card>
 
-        <el-dialog title="查看缓存值" :visible.sync="dialogVisible" width="700px">
+        <el-dialog title="查看缓存值" :visible.sync="dialogVisible">
             <el-pre :html="dialogContent"></el-pre>
         </el-dialog>
     </div>
@@ -32,7 +32,7 @@
     import {
         MessageBox
     } from "element-ui";
-    
+
     export default {
         data() {
             return {
@@ -107,6 +107,9 @@
     };
 </script>
 
-<style scoped>
-
+<style>
+    .el-dialog {
+        width: 90%;
+        max-width: 700px;
+    }
 </style>

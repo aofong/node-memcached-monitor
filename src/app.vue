@@ -5,7 +5,6 @@
                 <el-header height="150px">
                     <div class="header">
                         <div class="title">memcached monitor</div>
-
                     </div>
 
                 </el-header>
@@ -15,7 +14,9 @@
                         <el-menu-item index="/keys">keys管理 </el-menu-item>
                         <el-menu-item index="/setting">配置 </el-menu-item>
                     </el-menu>
-                    <router-view></router-view>
+                    <keep-alive>
+                        <router-view></router-view>
+                    </keep-alive>
                 </el-main>
             </el-container>
         </transition>
@@ -26,7 +27,7 @@
     export default {
         data() {
             return {
-                activeIndex: this.$route.path === '/' || this.$route.path === '' ? "/keys" : this.$route.path
+                activeIndex: this.$route.path === '/' || this.$route.path === '' ? "/monitor" : this.$route.path
             }
         },
         methods: {
@@ -46,20 +47,23 @@
     .el-header {
         background-color: #409eff;
         color: #fff;
-        line-height: 150px;
         font-size: 40px;
         font-weight: 800;
+        display: flex;
+        align-items: center;
     }
 
     .el-header .header {
-        width: 1024px;
+        width: 100%;
+        max-width: 1024px;
         margin: 0 auto;
         padding: 0 20px;
         box-sizing: border-box;
     }
 
     .el-main {
-        width: 1024px;
+        width: 100%;
+        max-width: 1024px;
         margin: 0 auto;
         padding-top: 0;
     }

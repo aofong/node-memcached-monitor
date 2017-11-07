@@ -33,16 +33,16 @@ exports.get = (key) => {
 }
 
 exports.stats = async () => {
-    //return await memcached.stats()
-    var Random = Mock.Random;
-    var vdata = Mock.mock({
-        'data|1-10': [{
-            'server': Random.ip(),
-            'curr_connections|100-999': 1,
-            'cmd_get|100-999': 1,
-            'cmd_set|100-999': 1,
-            'get_hits|100-999': 1
-        }]
-    });
-    return vdata.data;
+    return await memcached.stats()
+    // var Random = Mock.Random;
+    // var vdata = Mock.mock({
+    //     'data|1-10': [{
+    //         'server': Random.ip(),
+    //         'curr_connections|100-999': 1,
+    //         'cmd_get|100-999': 1,
+    //         'cmd_set|100-999': 1,
+    //         'get_hits|100-999': 1
+    //     }]
+    // });
+    // return vdata.data;
 }

@@ -1,28 +1,45 @@
 <template>
     <div>
         <el-row>
-            <el-select v-model="server" placeholder="查看单台服务器" @change="onChange">
+            <el-select v-model="serverip" placeholder="查看单台服务器" clearable @change="onChange">
                 <el-option :label="i.server" :value="i.server" :key="i.server" v-for="i in stats"></el-option>
             </el-select>
         </el-row>
-        <el-row type="flex" justify="space-around">
-            <el-col :span="12">
+
+        <el-row>
+            <el-alert title="" type="success">存储空间:{{server.bytes}}G,分配内存:{{server.limit_maxbytes}}G
+            </el-alert>
+        </el-row>
+
+        <el-row :gutter="20">
+            <el-col :md="12" :xs="24">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>连接数</span>
+                        <el-button style="float: right; padding: 3px 0" type="text">连接数：{{conns}}</el-button>
                     </div>
-                    <div id="conns-chart" style="width:100%; height:200px;"> </div>
+                    <div id="conns-chart" style="width:100%; height:200px;"></div>
                 </el-card>
             </el-col>
-            <el-col :span="12">
+            <el-col :md="12" :xs="24">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>命令数</span>
-                        <span>命中率= {{hits}}%</span>
+                        <span>命令数(每秒)</span>
+                        <el-button style="float: right; padding: 3px 0" type="text">命中率：{{hits}}%</el-button>
                     </div>
                     <div id="cmds-chart" style="width:100%; height:200px;"> </div>
                 </el-card>
             </el-col>
+        </el-row>
+
+
+        <el-row>
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>流量(每秒,单位:M)</span>
+                </div>
+                <div id="net-chart" style="width:100%; height:200px;"> </div>
+            </el-card>
         </el-row>
     </div>
 </template>
@@ -40,8 +57,17 @@
                 connections: [],
                 cmds: [],
                 stats: [],
+                nets: [],
                 hits: 0,
-                server: ''
+                conns: 0,
+                serverip: '',
+                server: {
+                    cmds: [],
+                    nets: [],
+                    bytes: 0, //存储空间
+                    limit_maxbytes: 0, //内存空间
+                    bytes_written: 0 //发送数据
+                }
             }
         },
         async mounted() {
@@ -51,8 +77,7 @@
                 await self.onStats();
             }, 3000);
             this.$nextTick(function () {
-                self.chart('conns-chart', self.connections, () => self.connections);
-                self.chart('cmds-chart', self.cmds, () => self.cmds);
+                self.refresh();
             })
 
         },
@@ -65,16 +90,19 @@
                 if (result.code === 200) {
                     self.stats = result.body;
 
-                    var conns = 0;
-                    var cmds = 0;
-                    var get_hits = 0;
-                    var cmd_get = 0;
+                    var conns = 0,
+                        cmds = 0,
+                        get_hits = 0,
+                        cmd_get = 0,
+                        bytes = 0,
+                        limit_maxbytes = 0,
+                        bytes_written = 0;
 
                     //
                     var servers = self.stats;
-                    if (self.server !== '') {
+                    if (self.serverip !== '') {
                         servers = servers.filter((x) => {
-                            return x.server === self.server;
+                            return x.server === self.serverip;
                         })
                     }
                     servers.forEach((x) => {
@@ -82,17 +110,46 @@
                         cmds += x.cmd_get + x.cmd_set;
                         get_hits += x.get_hits;
                         cmd_get += x.cmd_get;
+
+                        bytes += x.bytes;
+                        limit_maxbytes += x.limit_maxbytes;
+                        bytes_written += x.bytes_written;
                     });
+                    self.server.bytes = Math.round(bytes / (1024 * 1024 * 1024));
+                    self.server.limit_maxbytes = Math.round(limit_maxbytes / (1024 * 1024 * 1024));
 
                     var date = (new Date()).getTime();
                     self.connections.push({
                         x: date,
                         y: conns
                     });
-                    self.cmds.push({
+                    self.server.cmds.push({
                         x: date,
                         y: cmds
                     });
+                    self.server.nets.push({
+                        x: date,
+                        y: bytes_written
+                    });
+
+
+                    if (self.server.cmds.length > 1) {
+                        var lastCmds = self.server.cmds[self.server.cmds.length - 2];
+                        self.cmds.push({
+                            x: date,
+                            y: Math.round((cmds - lastCmds.y) * 1000 / (date - lastCmds.x))
+                        });
+                    }
+                    if (self.server.nets.length > 1) {
+                        var lastCmds = self.server.nets[self.server.nets.length - 2];
+                        self.nets.push({
+                            x: date,
+                            y: parseFloat(((bytes_written - lastCmds.y) * 1000 / ((date - lastCmds.x) * (1024 *
+                                1024))).toFixed(1))
+                        });
+                    }
+
+
 
                     if (self.connections.length > maxCount) {
                         self.connections = self.connections.slice(self.connections.length - maxCount);
@@ -103,16 +160,41 @@
 
                     //命中率
                     self.hits = Math.round(get_hits / cmd_get * 100);
+                    self.conns = conns;
                 }
             },
             onChange() {
                 var self = this;
                 self.connections = [];
                 self.cmds = []
+                self.nets = []
+                self.server.cmds = []
+                self.server.nets = []
+
+                Highcharts.charts.forEach(x => {
+                    x.series[0].setData([]);
+                })
+            },
+            refresh() {
+                var self = this;
+                var now = (new Date()).getTime();
+                self.chart('conns-chart', [], () => self.connections.length ? self.connections[self.connections
+                    .length - 1] : {
+                    x: now,
+                    y: 0
+                });
+                self.chart('cmds-chart', [], () => self.cmds.length ? self.cmds[self.cmds.length - 1] : {
+                    x: now,
+                    y: 0
+                });
+                self.chart('net-chart', [], () => self.nets.length ? self.nets[self.nets.length - 1] : {
+                    x: now,
+                    y: 0
+                });
             },
             chart(elm, data, setpcb) {
                 var self = this;
-                Highcharts.chart(elm, {
+                return Highcharts.chart(elm, {
                     chart: {
                         type: 'spline',
                         animation: Highcharts.svg, // don't animate in old IE
@@ -123,7 +205,7 @@
                                 // set up the updating of the chart each second
                                 var series = this.series[0];
                                 setInterval(function () {
-                                    series.setData(setpcb(), true, true);
+                                    series.addPoint(setpcb(), true, series.data.length > 20);
                                 }, 5000);
                             }
                         }
@@ -138,12 +220,7 @@
                     yAxis: {
                         title: {
                             text: ''
-                        },
-                        plotLines: [{
-                            value: 0,
-                            width: 1,
-                            color: '#808080'
-                        }]
+                        }
                     },
                     tooltip: {
                         formatter: function () {
@@ -158,7 +235,10 @@
                     },
                     series: [{
                         name: 'Random data',
-                        data: data
+                        data: data,
+                        marker: {
+                            enabled: false
+                        }
                     }]
                 });
             }
@@ -166,8 +246,9 @@
     }
 </script>
 
-<style>
-    .el-row {
+<style scoped>
+    .el-row,
+    .el-col {
         margin-bottom: 20px;
     }
 </style>
