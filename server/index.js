@@ -48,6 +48,16 @@ app.get('/stats', async function (req, res) {
 });
 
 
+app.get('/setting', function (req, res) {
+
+    res.send({
+        code: 200,
+        message: 'sucess',
+        body: ''
+    });
+});
+
+
 var server = app.listen(3000, function () {
     var host = server.address().address;
     var port = server.address().port;

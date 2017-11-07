@@ -10,9 +10,7 @@
                 </el-header>
                 <el-main>
                     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router @select="handleSelect">
-                        <el-menu-item index="/monitor">服务监控 </el-menu-item>
-                        <el-menu-item index="/keys">keys管理 </el-menu-item>
-                        <el-menu-item index="/setting">配置 </el-menu-item>
+                        <el-menu-item :index="i.path" v-if="i.name" v-for="i in $router.options.routes">{{i.name}}</el-menu-item>
                     </el-menu>
                     <keep-alive>
                         <router-view></router-view>
@@ -29,6 +27,9 @@
             return {
                 activeIndex: this.$route.path === '/' || this.$route.path === '' ? "/monitor" : this.$route.path
             }
+        },
+        created(){
+            //console.log(this)
         },
         methods: {
             handleSelect(key, keyPath) {
