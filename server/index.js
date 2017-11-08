@@ -82,7 +82,7 @@ app.get('/log', async function (req, res) {
         res.send({
             code: 200,
             message: 'sucess',
-            body: data.toString()
+            body: data.toString() || 'The log is empty!'
         });
     } catch (error) {
         res.send({

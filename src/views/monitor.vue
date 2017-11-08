@@ -12,7 +12,7 @@
         </el-row>
 
         <el-row>
-            <el-alert title="" type="success">存储空间:{{server.bytes}}G,分配内存:{{server.limit_maxbytes}}G
+            <el-alert title="" type="info" :closable="false">存储空间:{{server.bytes}}G,分配内存:{{server.limit_maxbytes}}G
             </el-alert>
         </el-row>
 

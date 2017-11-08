@@ -30,6 +30,11 @@ let routes = [{
     component: setting
 
 }, {
+    path: '/git',
+    name: 'git',
+    component: NotFound
+
+}, {
     path: '*',
     component: NotFound
 }

@@ -1,12 +1,10 @@
 <template>
     <div>
+        <el-alert title="搜索提示" type="info" :closable="false" description="单次最大支持输出1000个key ,支持redis和memcached平台">
+        </el-alert>
         <el-form :label-position="labelPosition" :model="search" @submit.native.prevent @keyup.enter="onSearch">
             <el-form-item label="搜索缓存key，支持前缀搜索，示例：cachekey_">
                 <el-input v-model="search.key"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-alert title="搜索提示" type="info" description="单次最大支持输出1000个key ,支持redis和memcached平台">
-                </el-alert>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSearch">搜索</el-button>
