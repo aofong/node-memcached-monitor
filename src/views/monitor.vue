@@ -4,6 +4,11 @@
             <el-select v-model="serverip" placeholder="查看单台服务器" clearable @change="onChange">
                 <el-option :label="i.server" :value="i.server" :key="i.server" v-for="i in stats"></el-option>
             </el-select>
+            <el-button type="primary" plain @click="isShowRaw=!isShowRaw">{{isShowRaw?"关闭原始数据":"查看原始数据"}}</el-button>
+        </el-row>
+
+        <el-row v-if="isShowRaw">
+            <monitor-raw :raws="stats"> </monitor-raw>
         </el-row>
 
         <el-row>
@@ -46,6 +51,9 @@
 <script>
     import superagent from "superagent";
     import Highcharts from 'highcharts';
+    import monitorRaw from './monitor-raw.vue';
+
+
     Highcharts.setOptions({
         global: {
             useUTC: false
@@ -54,6 +62,7 @@
     export default {
         data() {
             return {
+                isShowRaw: false,
                 connections: [],
                 cmds: [],
                 stats: [],
@@ -69,6 +78,9 @@
                     bytes_written: 0 //发送数据
                 }
             }
+        },
+        components: {
+            'monitor-raw': monitorRaw
         },
         async mounted() {
             var self = this;

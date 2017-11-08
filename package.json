@@ -4,6 +4,7 @@
     "description": "memcached monitor for nodejs",
     "main": "./server/index.js",
     "dependencies": {
+        "body-parser": "^1.18.2",
         "element-ui": "^2.0.3",
         "express": "^4.16.2",
         "highcharts": "^6.0.2",

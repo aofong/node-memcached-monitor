@@ -1,8 +1,14 @@
 var Mock = require('mockjs');
 var memcached = require('./sync/memcached');
+var config = require('./config');
 
+var configmap = config.getting();
 
 exports.search = (key) => {
+    if (configmap.closeMock) {
+        //
+    }
+
     var vdata = Mock.mock({
         'data|1-10': [{
             'name|4-8': /[a-z][A-Z][0-9]/,
@@ -14,11 +20,18 @@ exports.search = (key) => {
 
 
 exports.del = (keys) => {
+    if (configmap.closeMock) {
+        //
+    }
     return true;
 }
 
 
 exports.get = (key) => {
+    if (configmap.closeMock) {
+        //
+    }
+
     var Random = Mock.Random;
     var vdata = Mock.mock({
         'name|4-8': /[a-z][A-Z][0-9]/,
@@ -32,8 +45,10 @@ exports.get = (key) => {
     return vdata;
 }
 
-exports.stats = async () => {
-    //return await memcached.stats()
+exports.stats = async() => {
+    if (configmap.closeMock) {
+        return await memcached.stats();
+    }
     var Random = Mock.Random;
     var vdata = Mock.mock({
         'data|1-10': [{
@@ -48,4 +63,24 @@ exports.stats = async () => {
         }]
     });
     return vdata.data;
+}
+
+/**
+ * 保存配置文件
+ * 
+ * @param {any} setting 
+ * @returns 
+ */
+exports.setting = async(setting) => {
+    try {
+        var result = await config.setting(setting);
+        configmap = result;
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+exports.getting = () => {
+    return configmap;
 }

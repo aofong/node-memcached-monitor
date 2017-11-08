@@ -1,12 +1,21 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
 var api = require('./api');
+var log = require('./sync/log');
+var config = require('./config');
 
+var config = config.getting();
 
 //var sync = require('./sync/index')
 
 
 //app.use(express.static('public'));
+
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
+app.use(bodyParser.json());
 
 app.get('/search', function (req, res) {
     var key = req.query.key;
@@ -48,17 +57,44 @@ app.get('/stats', async function (req, res) {
 });
 
 
-app.get('/setting', function (req, res) {
-
+app.post('/setting', async function (req, res) {
+    var setting = req.body;
+    var result = await api.setting(setting);
     res.send({
         code: 200,
         message: 'sucess',
-        body: ''
+        body: setting
     });
 });
 
+app.get('/getting', function (req, res) {
+    var result = api.getting();
+    res.send({
+        code: 200,
+        message: 'sucess',
+        body: result
+    });
+});
 
-var server = app.listen(3000, function () {
+app.get('/log', async function (req, res) {
+    try {
+        var data = await log.readLog();
+        res.send({
+            code: 200,
+            message: 'sucess',
+            body: data.toString()
+        });
+    } catch (error) {
+        res.send({
+            code: 500,
+            message: error.message,
+            body: error.message
+        });
+    }
+});
+
+
+var server = app.listen(config.port, function () {
     var host = server.address().address;
     var port = server.address().port;
 
