@@ -24,6 +24,7 @@
         "file-loader": "^0.10.1",
         "html-webpack-plugin": "^2.24.1",
         "mockjs": "^1.0.1-beta3",
+        "mssql": "^4.1.0",
         "postcss-loader": "^1.3.3",
         "rimraf": "^2.5.4",
         "style-loader": "^0.13.2",

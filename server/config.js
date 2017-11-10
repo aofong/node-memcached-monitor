@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var util = require('util');
-var configPath = path.join(process.cwd(), './server/_config.json');
+var configPath = path.join(process.cwd(), './config.json');
 
 var config = null;
 
@@ -14,6 +14,9 @@ var defaultConfig = {
 };
 
 function getting() {
+    if (!fs.existsSync(configPath)) {
+        fs.writeFileSync(configPath, '');
+    }
     return JSON.parse(fs.readFileSync(configPath).toString() || JSON.stringify(defaultConfig));
 }
 

@@ -12,6 +12,8 @@
         </el-row>
 
         <el-row>
+            <el-alert v-if="ajaxfailmsg" :title="ajaxfailmsg" type="error" :closable="false" description="">
+            </el-alert>
             <el-alert title="" type="info" :closable="false">存储空间:{{server.bytes}}G,分配内存:{{server.limit_maxbytes}}G
             </el-alert>
         </el-row>
@@ -76,7 +78,9 @@
                     bytes: 0, //存储空间
                     limit_maxbytes: 0, //内存空间
                     bytes_written: 0 //发送数据
-                }
+                },
+                ajaxfail: false,
+                ajaxfailmsg: "",
             }
         },
         components: {
@@ -98,8 +102,8 @@
                 var self = this;
                 var maxCount = 20;
                 var result = (await superagent.get("/api/stats")).body;
-                //console.log(result.body)
                 if (result.code === 200) {
+                    self.ajaxfailmsg = '';
                     self.stats = result.body;
 
                     var conns = 0,
@@ -173,6 +177,8 @@
                     //命中率
                     self.hits = Math.round(get_hits / cmd_get * 100);
                     self.conns = conns;
+                } else {
+                    self.ajaxfailmsg = result.message;
                 }
             },
             onChange() {

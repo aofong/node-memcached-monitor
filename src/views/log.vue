@@ -18,7 +18,12 @@
             'el-pre': pre
         },
         async created() {
-            this.log = (await superagent.get("/api/log")).body.body;
+            var result = (await superagent.get("/api/log")).body;
+            if (result.code === 200) {
+                this.log = result.body;
+            } else {
+                this.log = result.message;
+            }
         }
     }
 </script>

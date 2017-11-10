@@ -7,7 +7,7 @@ var config = require('./config');
 
 var config = config.getting();
 
-//var sync = require('./sync/index')
+var sync = require('./sync/index')
 
 
 //app.use(express.static('public'));
@@ -48,23 +48,39 @@ app.get('/get', function (req, res) {
 });
 
 app.get('/stats', async function (req, res) {
-    var data = await api.stats();
-    res.send({
-        code: 200,
-        message: 'sucess',
-        body: data
-    });
+    try {
+        var data = await api.stats();
+        res.send({
+            code: 200,
+            message: 'sucess',
+            body: data
+        });
+    } catch (error) {
+        res.send({
+            code: 500,
+            message: 'ERROR,如果您修改过服务器ip配置，请重新启动服务！',
+            body: error.message
+        });
+    }
 });
 
 
 app.post('/setting', async function (req, res) {
     var setting = req.body;
-    var result = await api.setting(setting);
-    res.send({
-        code: 200,
-        message: 'sucess',
-        body: setting
-    });
+    try {
+        var result = await api.setting(setting);
+        res.send({
+            code: 200,
+            message: 'sucess',
+            body: setting
+        });
+    } catch (error) {
+        res.send({
+            code: 500,
+            message: error.message,
+            body: error.message
+        });
+    }
 });
 
 app.get('/getting', function (req, res) {
@@ -87,7 +103,7 @@ app.get('/log', async function (req, res) {
     } catch (error) {
         res.send({
             code: 500,
-            message: error.message,
+            message: 'The log is empty!',
             body: error.message
         });
     }

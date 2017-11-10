@@ -6,7 +6,7 @@ var configmap = config.getting();
 
 exports.search = (key) => {
     if (configmap.closeMock) {
-        //
+        //todo:实现搜索key功能
     }
 
     var vdata = Mock.mock({
@@ -21,7 +21,7 @@ exports.search = (key) => {
 
 exports.del = (keys) => {
     if (configmap.closeMock) {
-        //
+        //todo:实现删除key功能
     }
     return true;
 }
@@ -29,7 +29,7 @@ exports.del = (keys) => {
 
 exports.get = (key) => {
     if (configmap.closeMock) {
-        //
+        //todo:实现获取key value值功能
     }
 
     var Random = Mock.Random;
@@ -72,13 +72,8 @@ exports.stats = async() => {
  * @returns 
  */
 exports.setting = async(setting) => {
-    try {
-        var result = await config.setting(setting);
-        configmap = result;
-        return true;
-    } catch (error) {
-        return false;
-    }
+    var result = await config.setting(setting);
+    configmap = result;
 }
 
 exports.getting = () => {

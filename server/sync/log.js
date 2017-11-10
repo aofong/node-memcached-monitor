@@ -8,7 +8,7 @@ exports.appendFile = (_path, data) => {
 }
 
 exports.readFile = (_path) => {
-    return utils.promisify(fs.readFile)(_path, { flag: 'w+' });
+    return utils.promisify(fs.readFile)(_path);
 }
 
 

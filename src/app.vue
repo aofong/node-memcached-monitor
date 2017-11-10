@@ -1,40 +1,30 @@
 <template>
     <div id="app">
-        <transition name="fade" mode="out-in">
-            <el-container>
-                <el-header height="150px">
-                    <div class="header">
-                        <div class="title">memcached monitor</div>
-                    </div>
+        <el-container>
+            <el-header height="150px">
+                <div class="header">
+                    <div class="title">memcached monitor</div>
+                </div>
 
-                </el-header>
-                <el-main>
-                    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router @select="handleSelect">
-                        <el-menu-item :index="i.path" v-if="i.name" :key="i.path" v-for="i in $router.options.routes">{{i.name}}</el-menu-item>
-                    </el-menu>
-                    <keep-alive>
+            </el-header>
+            <el-main>
+                <app-nav></app-nav>
+                <keep-alive>
+                    <transition name="fade" mode="out-in">
                         <router-view></router-view>
-                    </keep-alive>
-                </el-main>
-            </el-container>
-        </transition>
+                    </transition>
+                </keep-alive>
+            </el-main>
+        </el-container>
+
     </div>
 </template>
 
 <script>
+    import appNav from './views/nav.vue';
     export default {
-        data() {
-            return {
-                activeIndex: this.$route.path === '/' || this.$route.path === '' ? "/monitor" : this.$route.path
-            }
-        },
-        created(){
-            //console.log(this)
-        },
-        methods: {
-            handleSelect(key, keyPath) {
-                //console.log(key, keyPath);
-            }
+        components: {
+            'app-nav': appNav
         }
     };
 </script>
