@@ -1,13 +1,16 @@
 var memcached = require('./memcached');
 var fs = require('fs');
+var path = require('path');
 var util = require('util');
 var log = require('./log');
+
+var keypath = path.join(process.cwd(), './server/sync/keys.log');
 
 fs.writeFile = util.promisify(fs.writeFile);
 fs.appendFile = util.promisify(fs.appendFile);
 
 exports.flushFile = async() => {
-    await fs.writeFile('./keys.log', '');
+    await fs.writeFile(keypath, '');
 }
 
 exports.sync = async() => {
@@ -32,7 +35,7 @@ exports.sync = async() => {
                             for (var index = 0; index < dumps.length; index++) {
                                 str += `${dumps[index].key}\n`;
                             }
-                            await fs.appendFile('./keys.log', str);
+                            await fs.appendFile(keypath, str);
                         }
                         //log.log(`[${itemSet.server}=>${stats}]:${dumps.length}`);
                         return Promise.resolve(dumps.length);

@@ -2,15 +2,16 @@
     <div>
         <el-alert title="搜索提示" type="info" :closable="false" description="单次最大支持输出1000个key ,支持redis和memcached平台">
         </el-alert>
-        <el-form :label-position="labelPosition" :model="search" @submit.native.prevent @keyup.enter="onSearch">
+        <el-form :label-position="labelPosition" :model="search" @submit.native.prevent>
             <el-form-item label="搜索缓存key，支持前缀搜索，示例：cachekey_">
-                <el-input v-model="search.key"></el-input>
+                <el-input v-model="search.key" @keyup.enter="onSearch"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSearch">搜索</el-button>
             </el-form-item>
         </el-form>
-
+        <el-alert v-if="ajaxfail" title="操作提示" type="warning" :closable="false" :description="ajaxfailmsg">
+        </el-alert>
         <el-card class="box-card" v-if="ajaxloading||searchResult.length" v-loading="ajaxloading">
             <div v-for="(i,index) in searchResult" :key="i.name" class="text item">
                 [{{i.platform}}] {{i.name}}
@@ -18,7 +19,7 @@
                 <a href="javascript:void(0)" @click=onShow(i.name)>查看</a>
             </div>
         </el-card>
-
+        <div v-if="search.key!=='' && !searchResult.length" class="text item">没有搜索到符合条件key</div>
         <el-dialog title="查看缓存值" :visible.sync="dialogVisible">
             <el-pre :html="dialogContent"></el-pre>
         </el-dialog>
@@ -114,5 +115,9 @@
     .el-dialog {
         width: 90%;
         max-width: 700px;
+    }
+
+    .item {
+        margin-bottom: 18px;
     }
 </style>

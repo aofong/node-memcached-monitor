@@ -17,34 +17,66 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-app.get('/search', function (req, res) {
-    var key = req.query.key;
-    var data = api.search(key);
-    res.send({
-        code: 200,
-        message: 'sucess',
-        body: data
-    });
+
+app.get('/search', async function (req, res) {
+    var key = req.query.key || '';
+    try {
+        var data = await api.search(key);
+        res.send({
+            code: 200,
+            message: 'sucess',
+            body: data
+        });
+    } catch (error) {
+        res.send({
+            code: 500,
+            message: error.message,
+            body: error.message
+        });
+    }
 });
 
-app.get('/del', function (req, res) {
+app.get('/del', async function (req, res) {
     var keys = (req.query.keys || '').split(',');
-    var data = api.del(keys);
-    res.send({
-        code: 200,
-        message: 'sucess',
-        body: data
-    });
+    if (!keys.length) {
+        return res.send({
+            code: 500,
+            message: '没有传递keys',
+            body: ''
+        });
+    }
+    try {
+        var data = await api.del(keys);
+        res.send({
+            code: 200,
+            message: 'sucess',
+            body: data
+        });
+    } catch (error) {
+        res.send({
+            code: 500,
+            message: error.message,
+            body: error.message
+        });
+    }
 });
 
-app.get('/get', function (req, res) {
+app.get('/get', async function (req, res) {
     var key = req.query.key;
-    var data = api.get(key);
-    res.send({
-        code: 200,
-        message: 'sucess',
-        body: data
-    });
+    try {
+        var data = await api.get(key);
+        res.send({
+            code: 200,
+            message: 'sucess',
+            body: data
+        });
+    } catch (error) {
+        res.send({
+            code: 500,
+            message: error.message,
+            body: error.message
+        });
+    }
 });
 
 app.get('/stats', async function (req, res) {
@@ -109,7 +141,13 @@ app.get('/log', async function (req, res) {
     }
 });
 
-
+app.use(function (err, req, res, next) {
+    res.send({
+        code: 500,
+        message: 'ERROR,如果您修改过服务器ip配置，请重新启动服务！',
+        body: err.message
+    });
+})
 var server = app.listen(config.port, function () {
     var host = server.address().address;
     var port = server.address().port;

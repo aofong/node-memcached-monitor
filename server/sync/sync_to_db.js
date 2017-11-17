@@ -1,38 +1,20 @@
 var readLine = require('lei-stream').readLine;
-var mssql = require('mssql');
 var log = require('./log');
+var mssqlhelper = require('./mssqlhelper');
+var path = require('path');
+var logpath = path.join(process.cwd(), './server/sync/keys.log');
 
-var mssqlconfig = {
-    user: '63H^&JQ&UYQ^jk8u5jhy77jsa96',
-    password: 'Mb7UQ678yju2U@&@^3722&4j2j2',
-    server: '119.254.116.182',
-    database: 'ExamSystem',
-    options: {
-        useUTC: false
-    }
-}
-
-var tableName = 'Examda_Cache_Keys';
+//TODO:存储缓存key的表名
+var tableName = 'caches';
 var _table = null;
-var pool = null;
 var insertCount = 0;
-
-
-async function sqldb() {
-    if (pool == null || !pool.connected) {
-        mssql.close();
-        pool = await mssql.connect(mssqlconfig);
-    }
-    return await new mssql.Request();
-}
-
 
 async function insert(data) {
     try {
         if (_table === null) {
-            const table = new mssql.Table(tableName);
-            table.columns.add('keyName', mssql.NVarChar(400));
-            table.columns.add('platform', mssql.NVarChar(50));
+            const table = new mssqlhelper.mssql.Table(tableName);
+            table.columns.add('name', mssqlhelper.mssql.NVarChar(400));
+            table.columns.add('platform', mssqlhelper.mssql.NVarChar(50));
 
             _table = table;
         }
@@ -48,7 +30,7 @@ async function insert(data) {
             return;
         }
     } catch (error) {
-        mssql.close();
+        mssqlhelper.mssql.close();
         log.log(`[ERROR]:${error.message}`);
     }
 }
@@ -59,7 +41,7 @@ async function syncdb() {
     }
 
     try {
-        const request = await sqldb()
+        var request = await mssqlhelper.request();
         var result = await request.bulk(_table);
         _table = null;
         insertCount += result.rowsAffected;
@@ -75,12 +57,12 @@ exports.sync = () => {
     log.log('[sync db] is start');
     insertCount = 0;
     new Promise((resolve, reject) => {
-        readLine('./keys.log').go(async(data, next) => {
+        readLine(logpath).go(async(data, next) => {
             await insert(data);
             next();
         }, async function () {
             await syncdb();
-            mssql.close();
+            mssqlhelper.mssql.close();
             log.log(`[sync db] is over,${insertCount}`);
             resolve();
         });
