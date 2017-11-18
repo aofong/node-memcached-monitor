@@ -22,7 +22,7 @@
             </el-table-column>
             <el-table-column prop="ttl" label="过期时间" width="180" sortable :formatter="formatter">
             </el-table-column>
-            <el-table-column label="action" width="180">
+            <el-table-column label="操作" width="180">
                 <template slot-scope="scope">
                     <el-button @click="onShow(scope.row.name)" type="text" size="small">查看</el-button>
                     <el-button @click="onDel(scope.row.name,scope.$index)" type="text" size="small">删除</el-button>

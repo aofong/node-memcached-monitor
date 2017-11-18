@@ -9,12 +9,14 @@ var configmap = config.getting();
 //TODO:存储缓存key的表名
 var tableName = 'caches';
 
-exports.search = async(key) => {
+exports.search = async (key) => {
     if (!configmap.closeMock) {
         var vdata = Mock.mock({
-            'data|1-10': [{
+            'data|10-40': [{
                 'name|4-8': /[a-z][A-Z][0-9]/,
-                'platform|1': ['redis', 'memcached']
+                'size|1-4': /[0-9]/,
+                'ttl': Date.now() / 1000,
+                'platform': 'memcached'
             }]
         });
         return vdata.data;
@@ -27,7 +29,7 @@ exports.search = async(key) => {
 }
 
 
-exports.del = async(keys) => {
+exports.del = async (keys) => {
     if (!configmap.closeMock) {
         return true;
     }
@@ -37,7 +39,7 @@ exports.del = async(keys) => {
     var request = await mssqlhelper.request();
     var result = await request.input('keys', keys).query(`delete from ${tableName} where name in (@keys)`);
     if (result.rowsAffected > 0) {
-        Promise.all(keys.map(async(x) => {
+        Promise.all(keys.map(async (x) => {
             await memcached.del(x);
         }));
         return true;
@@ -47,13 +49,14 @@ exports.del = async(keys) => {
 }
 
 
-exports.get = async(key) => {
+exports.get = async (key) => {
     if (!configmap.closeMock) {
         var Random = Mock.Random;
         var vdata = Mock.mock({
             'name|4-8': /[a-z][A-Z][0-9]/,
-            'platform|1': ['redis', 'memcached'],
-            ttl: new Date(),
+            'platform': 'memcached',
+            'size': Random.integer(10, 5000),
+            'ttl': new Date(),
             'value': {
                 classId: Random.integer(1000, 9999),
                 className: Random.ctitle(5, 10)
@@ -66,7 +69,7 @@ exports.get = async(key) => {
     return await memcached.get(key);
 }
 
-exports.stats = async() => {
+exports.stats = async () => {
     if (!configmap.closeMock) {
         var Random = Mock.Random;
         var vdata = Mock.mock({
@@ -94,7 +97,7 @@ exports.stats = async() => {
  * @param {any} setting 
  * @returns 
  */
-exports.setting = async(setting) => {
+exports.setting = async (setting) => {
     var result = await config.setting(setting);
     configmap = result;
 }
