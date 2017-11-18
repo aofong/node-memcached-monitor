@@ -11,12 +11,6 @@
                     </el-switch>
                 </el-col>
             </el-form-item>
-
-            <el-form-item label="内置服务运行端口">
-                <el-col :span="2" :xs="6">
-                    <el-input v-model="setting.port" placeholder="默认:3000"></el-input>
-                </el-col>
-            </el-form-item>
             <el-form-item label="缓存key同步时间（单位：秒 默认15分钟）">
                 <el-col :span="2" :xs="6">
                     <el-input v-model="setting.synctime" placeholder="默认:900"></el-input>

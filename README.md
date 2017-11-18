@@ -1,20 +1,18 @@
 # node-memcached-monitor
-nodejs版本实现memcached服务监控、keys管理
-
-使用nodejs+vuejs+element-ui+webpack进行开发 作为学习项目，欢迎有需要的朋友一起进行探讨！
-
->本项目使用了es2015部分语法，请使用最新的运行环境，譬如不错的chrome
+>nodejs版本实现memcached服务监控、keys管理
+>本项目使用了es2015部分语法，请使用最新的运行环境，譬如不错的chrome、nodejs v8.0+
+>使用nodejs+vuejs+element-ui+webpack进行开发 作为学习项目，欢迎有需要的朋友一起进行探讨！
 
 实现功能：
-1. 服务器基础数据：系统分配内存、存储占用内存、其他实时数据
-2. 连接数：实时客户端连接数
-3. 命令数：实时每秒处理命令数、key值命中率
-4. 流量：实时每秒服务器发送流量
-5. key：实现key搜索、查看、删除功能、占用大小、过期时间
-6. 集群：支持集群模式
+- 服务器基础数据：系统分配内存、存储占用内存、其他实时数据
+- 连接数：实时客户端连接数
+- 命令数：实时每秒处理命令数、key值命中率
+- 流量：实时每秒服务器发送流量
+- key：实现key搜索、查看、删除功能、占用大小、过期时间
+- 集群：支持集群模式
 
 
-[github](https://github.com/aofong/node-memcached-monitor, "github") [码云](https://gitee.com/aofong/node-memcached-monitor, "oschina 码云")
+[github](https://github.com/aofong/node-memcached-monitor  "github") [码云](https://gitee.com/aofong/node-memcached-monitor "oschina 码云")
 
 # 运行示例
 
@@ -31,15 +29,14 @@ npm i 或者 npm install
 //运行nodejs后台服务
 node server/index   或者vscode直接按F5运行
 
-//运行web页面
 //开发环境
 npm run dev
 
 //生产环境
 npm run build
 
-//浏览
-http://localhost:8010
+//运行web页面
+http://localhost:3001
 
 ```
 
@@ -63,7 +60,7 @@ http://localhost:8010
 
 nodejs服务运行端口：3000 
 
-web界面运行端口：8010
+web界面运行端口：3001
 
 缓存同步时间：15分钟 
 
@@ -80,6 +77,9 @@ config.js 运行配置
 server/sync/mssqlhelper.js  内置mssql连接问题，可在此修改数据库连接
 
 server/api.js 接口服务，可在此移除mockjs数据 或者实现其他的存储
+
+# 浏览器支持
+现代浏览器、IE10+
 
 # 技术文档
 [nodejs](https://nodejs.org) [vuejs](https://cn.vuejs.org/) [element-ui](http://element-cn.eleme.io/#/zh-CN) [webpack-cn](https://doc.webpack-china.org/concepts/)
