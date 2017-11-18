@@ -1,6 +1,7 @@
 <template>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router @select="handleSelect">
-        <el-menu-item :index="i.path" v-if="i.name" :key="i.path" v-for="i in $router.options.routes">{{i.name}}</el-menu-item>
+        <el-menu-item :index="i.path" v-if="i.name" :key="i.path" v-for="i in $router.options.routes">{{i.name}}
+        </el-menu-item>
     </el-menu>
 </template>
 <script>

@@ -17,9 +17,9 @@
                     <el-input v-model="setting.port" placeholder="默认:3000"></el-input>
                 </el-col>
             </el-form-item>
-            <el-form-item label="缓存key同步时间（单位：秒）">
+            <el-form-item label="缓存key同步时间（单位：秒 默认15分钟）">
                 <el-col :span="2" :xs="6">
-                    <el-input v-model="setting.synctime" placeholder="默认:5"></el-input>
+                    <el-input v-model="setting.synctime" placeholder="默认:900"></el-input>
                 </el-col>
             </el-form-item>
             <el-form-item label="添加memcached服务器IP">
@@ -54,7 +54,7 @@
             this.setting = Object.assign({}, {
                 ips: '',
                 port: 3000,
-                synctime: 5,
+                synctime: 60 * 15,
                 closeMock: false,
                 lastAccess: ''
             }, result);

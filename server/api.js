@@ -36,7 +36,14 @@ exports.del = async(keys) => {
     //TODO:实现删除key功能，上述代码可以删除
     var request = await mssqlhelper.request();
     var result = await request.input('keys', keys).query(`delete from ${tableName} where name in (@keys)`);
-    return result.rowsAffected > 0;
+    if (result.rowsAffected > 0) {
+        Promise.all(keys.map(async(x) => {
+            await memcached.del(x);
+        }));
+        return true;
+    }
+
+    return false;
 }
 
 

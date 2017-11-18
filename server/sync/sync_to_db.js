@@ -14,15 +14,20 @@ async function insert(data) {
         if (_table === null) {
             const table = new mssqlhelper.mssql.Table(tableName);
             table.columns.add('name', mssqlhelper.mssql.NVarChar(400));
+            table.columns.add('size', mssqlhelper.mssql.Int);
+            table.columns.add('ttl', mssqlhelper.mssql.Int);
             table.columns.add('platform', mssqlhelper.mssql.NVarChar(50));
-
             _table = table;
         }
 
         if (data === null || data === '') {
             return;
         }
-        _table.rows.add(data, 'memcached', -1);
+        var tpmarr = data.split(' ');
+        if (tpmarr.length !== 3) {
+            return;
+        }
+        _table.rows.add(tpmarr[0], tpmarr[1], tpmarr[2], 'memcached');
 
         if (_table.rows.length >= 50000) {
             await syncdb();

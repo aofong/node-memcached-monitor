@@ -4,8 +4,10 @@
             <el-header height="150px">
                 <div class="header">
                     <div class="title">memcached monitor</div>
+                    <a target="_blank" href="https://github.com/aofong/node-memcached-monitor">
+                        <img src="https://img.shields.io/github/stars/aofong/node-memcached-monitor.svg" />
+                    </a>
                 </div>
-
             </el-header>
             <el-main>
                 <app-nav></app-nav>

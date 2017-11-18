@@ -1,10 +1,10 @@
 <template>
     <div>
-        <el-alert title="搜索提示" type="info" :closable="false" description="单次最大支持输出1000个key ,支持redis和memcached平台">
+        <el-alert title="搜索提示" type="info" :closable="false" description="单次最大支持输出1000个key">
         </el-alert>
         <el-form :label-position="labelPosition" :model="search" @submit.native.prevent>
             <el-form-item label="搜索缓存key，支持前缀搜索，示例：cachekey_">
-                <el-input v-model="search.key" @keyup.enter="onSearch"></el-input>
+                <el-input v-model="search.key" @keyup.enter="onSearch" placeholder="输入搜索key前缀"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSearch">搜索</el-button>
@@ -12,14 +12,23 @@
         </el-form>
         <el-alert v-if="ajaxfail" title="操作提示" type="warning" :closable="false" :description="ajaxfailmsg">
         </el-alert>
-        <el-card class="box-card" v-if="ajaxloading||searchResult.length" v-loading="ajaxloading">
-            <div v-for="(i,index) in searchResult" :key="i.name" class="text item">
-                [{{i.platform}}] {{i.name}}
-                <a href="javascript:void(0)" @click=onDel(i.name,index)>删除</a>
-                <a href="javascript:void(0)" @click=onShow(i.name)>查看</a>
-            </div>
-        </el-card>
-        <div v-if="search.key!=='' && !searchResult.length" class="text item">没有搜索到符合条件key</div>
+
+        <el-table :data="searchResult" border style="width: 100%">
+            <el-table-column prop="platform" label="平台" width="180">
+            </el-table-column>
+            <el-table-column prop="name" label="key名称">
+            </el-table-column>
+            <el-table-column prop="size" label="大小(b)" width="180">
+            </el-table-column>
+            <el-table-column prop="ttl" label="过期时间" width="180" sortable :formatter="formatter">
+            </el-table-column>
+            <el-table-column label="action" width="180">
+                <template slot-scope="scope">
+                    <el-button @click="onShow(scope.row.name)" type="text" size="small">查看</el-button>
+                    <el-button @click="onDel(scope.row.name,scope.$index)" type="text" size="small">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
         <el-dialog title="查看缓存值" :visible.sync="dialogVisible">
             <el-pre :html="dialogContent"></el-pre>
         </el-dialog>
@@ -53,6 +62,10 @@
             'el-pre': pre
         },
         methods: {
+            formatter(row, column, cellValue) {
+                var time = new Date(cellValue * 1000);
+                return `${time.getFullYear()}/${time.getMonth()+1}/${time.getDate()} ${time.getHours().toString().padStart(2,0)}:${time.getMinutes().toString().padStart(2,0)}:${time.getSeconds().toString().padStart(2,0)}`;
+            },
             async onSearch() {
                 var self = this;
                 self.ajaxloading = true;
@@ -102,7 +115,7 @@
                 self.ajaxfail = result.code !== 200;
                 if (result.code === 200) {
                     self.dialogVisible = true;
-                    self.dialogContent = `${JSON.stringify(result.body, null, 4)}`;
+                    self.dialogContent = `${JSON.stringify(result.body, null, 4)||'没有value值'}`;
                 } else {
                     self.ajaxfailmsg = result.message;
                 }

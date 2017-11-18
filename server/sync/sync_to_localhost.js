@@ -33,7 +33,7 @@ exports.sync = async() => {
                         if (dumps && dumps.length) {
                             var str = ``;
                             for (var index = 0; index < dumps.length; index++) {
-                                str += `${dumps[index].key}\n`;
+                                str += `${dumps[index].key} ${dumps[index].b} ${dumps[index].s}\n`;
                             }
                             await fs.appendFile(keypath, str);
                         }

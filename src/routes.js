@@ -27,7 +27,8 @@ let routes = [{
     component: setting
 }, {
     path: '/git',
-    name: 'git'
+    name: 'git',
+    component: home
 }, {
     path: '*',
     component: NotFound
