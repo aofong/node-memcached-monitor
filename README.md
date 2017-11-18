@@ -1,6 +1,8 @@
 # node-memcached-monitor
 >nodejs版本实现memcached服务监控、keys管理
+
 >本项目使用了es2015部分语法，请使用最新的运行环境，譬如不错的chrome、nodejs v8.0+
+
 >使用nodejs+vuejs+element-ui+webpack进行开发 作为学习项目，欢迎有需要的朋友一起进行探讨！
 
 实现功能：
