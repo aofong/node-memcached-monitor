@@ -7,6 +7,9 @@
                     <a target="_blank" href="https://github.com/aofong/node-memcached-monitor">
                         <img src="https://img.shields.io/github/stars/aofong/node-memcached-monitor.svg" />
                     </a>
+                    <a target="_blank" href="https://github.com/aofong/node-memcached-monitor">
+                        <img src="https://travis-ci.org/aofong/node-memcached-monitor.svg?branch=master" alt="">
+                    </a>
                 </div>
             </el-header>
             <el-main>

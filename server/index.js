@@ -1,16 +1,17 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var path = require('path');
 var api = require('./api');
 var log = require('./sync/log');
-var config = require('./config');
+var configMap = require('./config');
 
-var config = config.getting();
+var config = configMap.getting();
 
 var sync = require('./sync/index')
 
 
-//app.use(express.static('public'));
+app.use(express.static('dist'));
 
 app.use(bodyParser.urlencoded({
     extended: false
@@ -18,7 +19,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
-app.get('/search', async function (req, res) {
+
+app.get('/api/search', async function (req, res) {
     var key = req.query.key || '';
     try {
         var data = await api.search(key);
@@ -36,7 +38,7 @@ app.get('/search', async function (req, res) {
     }
 });
 
-app.get('/del', async function (req, res) {
+app.get('/api/del', async function (req, res) {
     var keys = (req.query.keys || '').split(',');
     if (!keys.length) {
         return res.send({
@@ -61,7 +63,7 @@ app.get('/del', async function (req, res) {
     }
 });
 
-app.get('/get', async function (req, res) {
+app.get('/api/get', async function (req, res) {
     var key = req.query.key;
     try {
         var data = await api.get(key);
@@ -79,7 +81,7 @@ app.get('/get', async function (req, res) {
     }
 });
 
-app.get('/stats', async function (req, res) {
+app.get('/api/stats', async function (req, res) {
     try {
         var data = await api.stats();
         res.send({
@@ -97,7 +99,7 @@ app.get('/stats', async function (req, res) {
 });
 
 
-app.post('/setting', async function (req, res) {
+app.post('/api/setting', async function (req, res) {
     var setting = req.body;
     try {
         var result = await api.setting(setting);
@@ -115,7 +117,7 @@ app.post('/setting', async function (req, res) {
     }
 });
 
-app.get('/getting', function (req, res) {
+app.get('/api/getting', function (req, res) {
     var result = api.getting();
     res.send({
         code: 200,
@@ -124,7 +126,7 @@ app.get('/getting', function (req, res) {
     });
 });
 
-app.get('/log', async function (req, res) {
+app.get('/api/log', async function (req, res) {
     try {
         var data = await log.readLog();
         res.send({

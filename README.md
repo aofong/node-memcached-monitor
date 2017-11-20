@@ -1,9 +1,14 @@
 # node-memcached-monitor
+
+![stars](https://img.shields.io/github/stars/aofong/node-memcached-monitor.svg) ![travis-ci](https://travis-ci.org/aofong/node-memcached-monitor.svg?branch=master) 
+
 >nodejs版本实现memcached服务监控、keys管理
 
 >本项目使用了es2015部分语法，请使用最新的运行环境，譬如不错的chrome、nodejs v8.0+
 
 >使用nodejs+vuejs+element-ui+webpack进行开发 作为学习项目，欢迎有需要的朋友一起进行探讨！
+
+>`练手项目，欢迎拍砖！`
 
 实现功能：
 - 服务器基础数据：系统分配内存、存储占用内存、其他实时数据
@@ -33,19 +38,18 @@ node server/index   或者vscode直接按F5运行
 
 //开发环境
 npm run dev
+http://localhost:3010 //运行开发环境web页面
 
 //生产环境
 npm run build
-
-//运行web页面
-http://localhost:3001
+http://localhost:3000 //运行生产环境web页面
 
 ```
 
 # 默认配置
 默认采用mockjs数据模拟相关数据
 
-您可要在配置页进行实例数据配置，配置完后记得重做服务！
+您可要在配置页进行实例数据配置，配置完后记得重启服务！
 
 ## 默认存储
 内置使用mssql存储缓存key值，表结构如下：
@@ -62,7 +66,7 @@ http://localhost:3001
 
 nodejs服务运行端口：3000 
 
-web界面运行端口：3001
+web界面运行端口：3010
 
 缓存同步时间：15分钟 
 
@@ -72,7 +76,7 @@ server 存储nodejs服务代码
 
 src 存储vuejs源文件
 
-disk 生成环境代码
+disk 生产环境代码
 
 config.js 运行配置
 
@@ -82,6 +86,10 @@ server/api.js 接口服务，可在此移除mockjs数据 或者实现其他的�
 
 # 浏览器支持
 现代浏览器、IE10+
+
+
+# 技术支持
+`84339706@qq.com`
 
 # 技术文档
 [nodejs](https://nodejs.org) [vuejs](https://cn.vuejs.org/) [element-ui](http://element-cn.eleme.io/#/zh-CN) [webpack-cn](https://doc.webpack-china.org/concepts/)
