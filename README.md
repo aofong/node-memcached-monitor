@@ -1,6 +1,6 @@
 # node-memcached-monitor
 
-![stars](https://img.shields.io/github/stars/aofong/node-memcached-monitor.svg) ![travis-ci](https://travis-ci.org/aofong/node-memcached-monitor.svg?branch=master) 
+[![stars](https://img.shields.io/github/stars/aofong/node-memcached-monitor.svg)](https://github.com/aofong/node-memcached-monitor) [![Build Status](https://travis-ci.org/aofong/node-memcached-monitor.svg?branch=master)](https://travis-ci.org/aofong/node-memcached-monitor)
 
 >nodejs版本实现memcached服务监控、keys管理
 
