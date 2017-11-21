@@ -1,10 +1,10 @@
 // @ts-nocheck
-import home from './views/home.vue'
-import monitor from './views/monitor.vue'
-import keys from './views/keys.vue'
-import setting from './views/setting.vue'
-import log from './views/log.vue'
-import NotFound from './views/404.vue'
+var home = resolve => require(['./views/home.vue'], resolve);
+var monitor = resolve => require(['./views/monitor.vue'], resolve);
+var keys = resolve => require(['./views/keys.vue'], resolve);
+var setting = resolve => require(['./views/setting.vue'], resolve);
+var log = resolve => require(['./views/log.vue'], resolve);
+var NotFound = resolve => require(['./views/404.vue'], resolve);
 
 let routes = [{
     path: '/',
