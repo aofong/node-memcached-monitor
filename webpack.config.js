@@ -10,9 +10,9 @@ module.exports = (options = {}) => ({
         app: './src/main.js'
     },
     output: {
-        path: resolve(__dirname, 'dist'),
-        filename: options.dev ? '[name].js' : '[name].[hash].bundle.js',
-        chunkFilename: '[id].[chunkhash].js',
+        path: resolve(__dirname, 'dist/'),
+        filename: options.dev ? '[name].js' : '[hash]/[name].[hash:8].js',
+        chunkFilename: '[hash]/[id].[chunkhash:8].js',
         publicPath: options.dev ? '/assets/' : publicPath
     },
     module: {
@@ -46,7 +46,11 @@ module.exports = (options = {}) => ({
             minChunks: Infinity
         }),
         new HtmlWebpackPlugin({
-            template: 'src/index.html'
+            template: 'src/index.html',
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true
+            }
         })
     ],
     resolve: {
