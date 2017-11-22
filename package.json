@@ -41,7 +41,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://gitee.com/aofong/node-memcached-monitor.git"
+        "url": "https://github.com/aofong/node-memcached-monitor"
     },
     "keywords": [
         "memcached",
