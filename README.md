@@ -58,9 +58,9 @@ http://localhost:3000 //运行生产环境web页面
 
 字段：name 建唯一索引，并忽略重复，建议配置定时任务来清理数据（每日清空一次）
 
-|id|name|size|ttl|platform| 
-|-|-|-|-|-| 
-|1|cachekey|123|123456789|memcached| 
+id|name|size|ttl|platform
+-|-|-|-|-
+1|cachekey|123|123456789|memcached
 
 ## 默认参数：
 
@@ -72,17 +72,15 @@ web界面运行端口：3010
 
 
 ## 文件目录
-server 存储nodejs服务代码
 
-src 存储vuejs源文件
-
-disk 生产环境代码
-
-config.js 运行配置
-
-server/sync/mssqlhelper.js  内置mssql连接问题，可在此修改数据库连接
-
-server/api.js 接口服务，可在此移除mockjs数据 或者实现其他的存储
+文件|备注
+-|-
+server| 存储nodejs服务代码
+src |存储vuejs源文件
+disk |生产环境代码
+config.js |运行配置
+server/sync/mssqlhelper.js | 内置mssql连接问题，可在此修改数据库连接
+server/api.js| 接口服务，可在此移除mockjs数据 或者实现其他的存储
 
 # 浏览器支持
 现代浏览器、IE10+
