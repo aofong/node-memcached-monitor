@@ -1,5 +1,5 @@
 {
-    "name": "node-memcahed-monitor",
+    "name": "node-memcached-monitor",
     "version": "1.0.0",
     "description": "memcached monitor for nodejs",
     "main": "./server/index.js",
