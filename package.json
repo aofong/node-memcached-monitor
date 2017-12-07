@@ -1,6 +1,6 @@
 {
     "name": "node-memcached-monitor",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "memcached monitor for nodejs memcached监控,key管理",
     "main": "./server/index.js",
     "dependencies": {
