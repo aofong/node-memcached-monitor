@@ -1,7 +1,7 @@
 {
     "name": "node-memcached-monitor",
     "version": "1.0.0",
-    "description": "memcached monitor for nodejs",
+    "description": "memcached monitor for nodejs memcached监控,key管理",
     "main": "./server/index.js",
     "dependencies": {
         "body-parser": "^1.18.2",
@@ -41,11 +41,12 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://gitee.com/aofong/node-memcached-monitor.git"
+        "url": "https://github.com/aofong/node-memcached-monitor"
     },
     "keywords": [
         "memcached",
-        "monitor"
+        "monitor",
+        "nodejs"
     ],
     "author": "84339706@qq.com",
     "license": "GPL-3.0"
