@@ -29,7 +29,7 @@
     import appNav from './views/nav.vue';
     export default {
         components: {
-            'app-nav': appNav
+            appNav
         }
     };
 </script>

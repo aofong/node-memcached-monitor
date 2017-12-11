@@ -5,9 +5,18 @@ const url = require('url')
 const publicPath = ''
 
 module.exports = (options = {}) => ({
-    entry: {
+    entry: options.dev ? {
         vendor: './src/vendor',
         app: './src/main.js'
+    } : {
+        app: './src/main.js'
+    },
+    externals: options.dev ? {} : {
+        'vue': 'Vue',
+        'vue-router': 'VueRouter',
+        'element-ui': 'ELEMENT',
+        'superagent': 'superagent',
+        'highcharts': 'Highcharts'
     },
     output: {
         path: resolve(__dirname, 'dist/'),
@@ -41,12 +50,18 @@ module.exports = (options = {}) => ({
         ]
     },
     plugins: [
+        new webpack.DefinePlugin({
+            "process.env": {
+                NODE_ENV: JSON.stringify(options.dev ? 'development' : 'production')
+            }
+        }),
         new webpack.optimize.CommonsChunkPlugin({
             names: ['vendor', 'manifest'],
             minChunks: Infinity
         }),
         new HtmlWebpackPlugin({
-            template: 'src/index.html',
+            filename: 'index.html',
+            template: options.dev ? 'src/index.html' : 'src/index-prod.html',
             minify: {
                 removeComments: true,
                 collapseWhitespace: true

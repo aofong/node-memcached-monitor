@@ -1,6 +1,6 @@
 {
     "name": "node-memcached-monitor",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "memcached monitor for nodejs memcached监控,key管理",
     "main": "./server/index.js",
     "dependencies": {
@@ -36,8 +36,8 @@
     },
     "scripts": {
         "test": "npm run build",
-        "dev": "webpack-dev-server --inline --hot --env.dev",
-        "build": "rimraf dist && webpack -p --progress --hide-modules"
+        "dev": "webpack-dev-server --inline --hot --env.dev ",
+        "build": "rimraf dist && webpack -p --progress --hide-modules && node ./server/index"
     },
     "repository": {
         "type": "git",
@@ -46,7 +46,11 @@
     "keywords": [
         "memcached",
         "monitor",
-        "nodejs"
+        "nodejs",
+        "vuejs",
+        "element-ui",
+        "elementui",
+        "element"
     ],
     "author": "84339706@qq.com",
     "license": "GPL-3.0"

@@ -8,7 +8,7 @@ var NotFound = resolve => require(['./views/404.vue'], resolve);
 
 let routes = [{
     path: '/',
-    component: monitor
+    redirect: '/monitor'
 }, {
     path: '/monitor',
     name: '服务监控',

@@ -151,8 +151,5 @@ app.use(function (err, req, res, next) {
     });
 })
 var server = app.listen(config.port, function () {
-    var host = server.address().address;
-    var port = server.address().port;
-
-    console.log('Example app listening at http://%s:%s', host, port);
+    console.log('服务已启动，生产环境请访问地址:http://localhost:%s，开发环境请访问:http://localhost:3010', config.port);
 });

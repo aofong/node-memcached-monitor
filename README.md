@@ -21,6 +21,12 @@
 
 [github](https://github.com/aofong/node-memcached-monitor  "github") [码云](https://gitee.com/aofong/node-memcached-monitor "oschina 码云")
 
+# npm安装
+
+```
+npm install node-memcached-monitor
+```
+
 # 运行示例
 
 ```
@@ -33,16 +39,18 @@ cd node-memcached-monitor
 //安装依赖
 npm i 或者 npm install
 
-//运行nodejs后台服务
-node server/index   或者vscode直接按F5运行
-
-//开发环境
-npm run dev
-http://localhost:3010 //运行开发环境web页面
-
 //生产环境
 npm run build
-http://localhost:3000 //运行生产环境web页面
+http://localhost:3000 //打开生产环境web页面
+
+
+//开发环境，需要分别运行webpack server 和node server
+//第一步:运行node server
+node ./server/index   或者vscode直接按F5运行
+//第二步:运行webpack server
+npm run dev
+//第三步:访问页面
+http://localhost:3010 //打开开发环境web页面
 
 ```
 
@@ -66,7 +74,7 @@ id|name|size|ttl|platform
 
 nodejs服务运行端口：3000 
 
-web界面运行端口：3010
+webpack运行端口：3010
 
 缓存同步时间：15分钟 
 
